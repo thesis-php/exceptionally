@@ -1,38 +1,43 @@
 {
-    "name": "vudaltsov/exceptionally",
-    "description": "Converts errors into exceptions easily",
-    "type": "library",
+    "name": "thesis/exceptionally",
+    "description": "Thesis Exceptionally",
     "license": "MIT",
+    "type": "library",
     "authors": [
+        {
+            "name": "kafkiansky",
+            "email": "vadimzanfir@gmail.com"
+        },
         {
             "name": "Valentin Udaltsov",
             "email": "udaltsov.valentin@gmail.com"
+        },
+        {
+            "name": "Thesis Team",
+            "homepage": "https://github.com/orgs/thesis-php/people"
         }
     ],
     "require": {
-        "php": "^7.1"
+        "php": "^8.3"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.15",
-        "vimeo/psalm": "^3.4",
-        "phpunit/phpunit": "^8.3"
+        "phpunit/phpunit": "^12.5.14"
     },
     "autoload": {
         "psr-4": {
-            "VUdaltsov\\Exceptionally\\": "src"
+            "Thesis\\": "src/"
         },
         "files": [
-            "functions.php"
+            "src/exceptionally.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "VUdaltsov\\Exceptionally\\": "tests"
+            "Thesis\\": "tests/"
         }
     },
-    "archive": {
-        "exclude": [
-            "/tests"
-        ]
+    "config": {
+        "lock": false,
+        "sort-packages": true
     }
 }

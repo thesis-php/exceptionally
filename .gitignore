@@ -1,4 +1,7 @@
+/var/
 /vendor/
-/.php_cs.cache
-/.phpunit.result.cache
-/composer.lock
+/.env.local
+/.php-cs-fixer.php
+/compose.override.yaml
+/phpstan.neon
+/phpunit.xml
