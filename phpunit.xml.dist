@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         beStrictAboutCoverageMetadata="true"
+         beStrictAboutOutputDuringTests="true"
          bootstrap="vendor/autoload.php"
          cacheDirectory="var/phpunit"
-         requireCoverageMetadata="true"
-         beStrictAboutOutputDuringTests="true"
+         defaultTestSuite="default"
+         displayDetailsOnAllIssues="true"
+         failOnIncomplete="true"
+         failOnNotice="true"
          failOnRisky="true"
          failOnWarning="true"
-         defaultTestSuite="default"
+         requireCoverageMetadata="true"
 >
     <testsuites>
         <testsuite name="default">
