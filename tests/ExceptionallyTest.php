@@ -7,6 +7,7 @@ namespace Thesis;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 
 #[CoversFunction('Thesis\exceptionally')]
@@ -15,6 +16,7 @@ final class ExceptionallyTest extends TestCase
     #[TestWith([E_USER_DEPRECATED])]
     #[TestWith([E_USER_NOTICE])]
     #[TestWith([E_USER_WARNING])]
+    #[WithoutErrorHandler]
     public function test(int $level): void
     {
         try {
@@ -31,11 +33,44 @@ final class ExceptionallyTest extends TestCase
         }
     }
 
+    #[WithoutErrorHandler]
+    public function testItThrowsNoMatterWhatErrorReportingLevel(): void
+    {
+        $this->expectException(\ErrorException::class);
+
+        $previousErrorReportingLevel = error_reporting(0);
+
+        try {
+            exceptionally(static function (): void {
+                trigger_error('Message', E_USER_WARNING);
+            });
+        } finally {
+            error_reporting($previousErrorReportingLevel);
+        }
+    }
+
+    #[WithoutErrorHandler]
     #[DoesNotPerformAssertions]
     public function testExactErrorLevel(): void
     {
+        $previousErrorReportingLevel = error_reporting(0);
+
+        try {
+            exceptionally(static function (): void {
+                trigger_error('Message', E_USER_WARNING);
+            }, E_USER_NOTICE);
+        } finally {
+            error_reporting($previousErrorReportingLevel);
+        }
+    }
+
+    #[WithoutErrorHandler]
+    public function testSuppressedErrorIsThrown(): void
+    {
+        $this->expectException(\ErrorException::class);
+
         exceptionally(static function (): void {
-            trigger_error('Message', E_USER_WARNING);
-        }, E_USER_NOTICE);
+            @trigger_error('Message', E_USER_WARNING);
+        });
     }
 }
