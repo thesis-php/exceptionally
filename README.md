@@ -20,7 +20,7 @@ $content = exceptionally(static fn() => file_get_contents('/path/to/file'));
 ```
 
 Many PHP functions trigger errors instead of throwing exceptions. This makes error handling inconsistent and cumbersome.
-`exceptionally()` wraps a callable and converts any triggered error into a native [ErrorException](https://php.net/manual/en/errorexception.construct.php).
+`exceptionally()` wraps a callable and converts any triggered error into a native [ErrorException](https://php.net/manual/class.errorexception.php).
 
 ### Error suppression operator
 
