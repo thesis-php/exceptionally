@@ -18,6 +18,8 @@ final class ExceptionallyTest extends TestCase
     #[WithoutErrorHandler]
     public function testItThrowsErrors(int $level): void
     {
+        $this->expectException(\ErrorException::class);
+
         try {
             exceptionally(static function () use ($level): void {
                 trigger_error('Message', $level);
@@ -29,6 +31,8 @@ final class ExceptionallyTest extends TestCase
             self::assertSame(__FILE__, $exception->getFile());
             self::assertSame($level, $exception->getSeverity());
             self::assertNull($exception->getPrevious());
+
+            throw $exception;
         }
     }
 
@@ -36,15 +40,9 @@ final class ExceptionallyTest extends TestCase
     #[DoesNotPerformAssertions]
     public function testItDoesNotThrowDeprecationsByDefault(): void
     {
-        $previousErrorReportingLevel = error_reporting(0);
-
-        try {
-            exceptionally(static function (): void {
-                trigger_error('Message', E_USER_DEPRECATED);
-            });
-        } finally {
-            error_reporting($previousErrorReportingLevel);
-        }
+        exceptionally(static function (): void {
+            trigger_error('Message', E_USER_DEPRECATED);
+        });
     }
 
     #[WithoutErrorHandler]
@@ -62,30 +60,18 @@ final class ExceptionallyTest extends TestCase
     {
         $this->expectException(\ErrorException::class);
 
-        $previousErrorReportingLevel = error_reporting(0);
-
-        try {
-            exceptionally(static function (): void {
-                trigger_error('Message', E_USER_WARNING);
-            });
-        } finally {
-            error_reporting($previousErrorReportingLevel);
-        }
+        exceptionally(static function (): void {
+            trigger_error('Message', E_USER_WARNING);
+        });
     }
 
     #[WithoutErrorHandler]
     #[DoesNotPerformAssertions]
     public function testItIgnoresErrorLevelsOutsideConfigured(): void
     {
-        $previousErrorReportingLevel = error_reporting(0);
-
-        try {
-            exceptionally(static function (): void {
-                trigger_error('Message', E_USER_WARNING);
-            }, E_USER_NOTICE);
-        } finally {
-            error_reporting($previousErrorReportingLevel);
-        }
+        exceptionally(static function (): void {
+            trigger_error('Message', E_USER_WARNING);
+        }, E_USER_NOTICE);
     }
 
     #[WithoutErrorHandler]
