@@ -89,10 +89,9 @@ final class ExceptionallyTest extends TestCase
     }
 
     #[WithoutErrorHandler]
-    public function testItThrowsSuppressedErrors(): void
+    #[DoesNotPerformAssertions]
+    public function testItDoesNotThrowSuppressedError(): void
     {
-        $this->expectException(\ErrorException::class);
-
         exceptionally(static function (): void {
             @trigger_error('Message', E_USER_WARNING);
         });

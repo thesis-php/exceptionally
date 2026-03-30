@@ -10,3 +10,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **BC break:** `E_DEPRECATED` and `E_USER_DEPRECATED` are no longer converted by default. Pass `E_ALL` explicitly to include them.
+- **BC break:** Errors suppressed with `@` are no longer converted to exceptions.
