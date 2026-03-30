@@ -8,7 +8,7 @@ namespace Thesis;
  * @api
  *
  * @template T
- * @param callable(): (false|T) $function
+ * @param callable(): (T|false) $function
  * @return T
  * @throws \ErrorException
  */
