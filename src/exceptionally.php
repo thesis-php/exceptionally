@@ -19,9 +19,9 @@ function exceptionally(callable $function, int $errorLevels = E_ALL & ~E_DEPRECA
 
     $handler ??= static function (int $level, string $message, string $file, int $line): bool {
         /** @see https://www.php.net/manual/en/language.operators.errorcontrol.php */
-        static $suppressedReportingLevel = E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR | E_PARSE;
+        static $suppressedLevel = E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR | E_PARSE;
 
-        if (error_reporting() === $suppressedReportingLevel) {
+        if (error_reporting() === $suppressedLevel) {
             return true;
         }
 
