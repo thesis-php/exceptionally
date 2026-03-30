@@ -13,9 +13,10 @@ use PHPUnit\Framework\TestCase;
 #[CoversFunction('Thesis\exceptionally')]
 final class ExceptionallyTest extends TestCase
 {
+    #[WithoutErrorHandler]
     #[TestWith([E_USER_NOTICE])]
     #[TestWith([E_USER_WARNING])]
-    #[WithoutErrorHandler]
+    #[TestWith([E_USER_ERROR])]
     public function testItThrowsErrors(int $level): void
     {
         $this->expectException(\ErrorException::class);
@@ -75,11 +76,14 @@ final class ExceptionallyTest extends TestCase
     }
 
     #[WithoutErrorHandler]
+    #[TestWith([E_USER_NOTICE])]
+    #[TestWith([E_USER_WARNING])]
+    #[TestWith([E_USER_ERROR])]
     #[DoesNotPerformAssertions]
-    public function testItDoesNotThrowSuppressedError(): void
+    public function testItDoesNotThrowSuppressedError(int $level): void
     {
-        exceptionally(static function (): void {
-            @trigger_error('Message', E_USER_WARNING);
+        exceptionally(static function () use ($level): void {
+            @trigger_error('Message', $level);
         });
     }
 }
