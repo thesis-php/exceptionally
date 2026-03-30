@@ -24,14 +24,20 @@ Many PHP functions trigger errors instead of throwing exceptions. This makes err
 
 ### Filtering by error level
 
-By default, all error levels are caught. You can specify which levels to convert:
+By default, all levels except `E_DEPRECATED` and `E_USER_DEPRECATED` are converted.
+Deprecations typically come from third-party libraries and should not interrupt execution.
+
+You can specify which levels to convert:
 
 ```php
-// Only convert notices
+// Convert notices
 $result = exceptionally($callback, E_USER_NOTICE);
 
 // Convert warnings and notices
 $result = exceptionally($callback, E_USER_WARNING | E_USER_NOTICE);
+
+// Convert all, including deprecations
+$result = exceptionally($callback, E_ALL);
 ```
 
 ## License

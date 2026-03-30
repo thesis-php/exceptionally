@@ -13,11 +13,10 @@ use PHPUnit\Framework\TestCase;
 #[CoversFunction('Thesis\exceptionally')]
 final class ExceptionallyTest extends TestCase
 {
-    #[TestWith([E_USER_DEPRECATED])]
     #[TestWith([E_USER_NOTICE])]
     #[TestWith([E_USER_WARNING])]
     #[WithoutErrorHandler]
-    public function test(int $level): void
+    public function testItThrowsErrors(int $level): void
     {
         try {
             exceptionally(static function () use ($level): void {
@@ -31,6 +30,31 @@ final class ExceptionallyTest extends TestCase
             self::assertSame($level, $exception->getSeverity());
             self::assertNull($exception->getPrevious());
         }
+    }
+
+    #[WithoutErrorHandler]
+    #[DoesNotPerformAssertions]
+    public function testItDoesNotThrowDeprecationsByDefault(): void
+    {
+        $previousErrorReportingLevel = error_reporting(0);
+
+        try {
+            exceptionally(static function (): void {
+                trigger_error('Message', E_USER_DEPRECATED);
+            });
+        } finally {
+            error_reporting($previousErrorReportingLevel);
+        }
+    }
+
+    #[WithoutErrorHandler]
+    public function testItThrowsDeprecationIfConfiguredExplicitly(): void
+    {
+        $this->expectException(\ErrorException::class);
+
+        exceptionally(static function (): void {
+            trigger_error('Message', E_USER_DEPRECATED);
+        }, E_USER_DEPRECATED);
     }
 
     #[WithoutErrorHandler]
@@ -51,7 +75,7 @@ final class ExceptionallyTest extends TestCase
 
     #[WithoutErrorHandler]
     #[DoesNotPerformAssertions]
-    public function testExactErrorLevel(): void
+    public function testItIgnoresErrorLevelsOutsideConfigured(): void
     {
         $previousErrorReportingLevel = error_reporting(0);
 
@@ -65,7 +89,7 @@ final class ExceptionallyTest extends TestCase
     }
 
     #[WithoutErrorHandler]
-    public function testSuppressedErrorIsThrown(): void
+    public function testItThrowsSuppressedErrors(): void
     {
         $this->expectException(\ErrorException::class);
 

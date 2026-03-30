@@ -12,7 +12,7 @@ namespace Thesis;
  * @return T
  * @throws \ErrorException
  */
-function exceptionally(callable $function, int $errorLevels = E_ALL): mixed
+function exceptionally(callable $function, int $errorLevels = E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED): mixed
 {
     /** @var ?\Closure(int, string, string, int): never */
     static $handler = null;
